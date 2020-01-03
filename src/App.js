@@ -1,16 +1,23 @@
 import React from 'react';
 import './App.css';
+<<<<<<< HEAD
 import Header from "/Users/flatironschoolbrooklyn/peng_frontend/src/Components/Header.js";
 import { Route, Switch } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import UserList from './Containers/UserList.js';
 import PostList from './Containers/PostList.js';
+=======
+import PostList from '/Users/flatironschoolbrooklyn/peng_frontend/src/Containers/PostList.js'
+import Header from "/Users/flatironschoolbrooklyn/peng_frontend/src/Components/Header.js"
+
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
 
 class App extends React.Component {
 
   state = {
     users: [],
     posts: [],
+<<<<<<< HEAD
     comments: []
   }
 
@@ -24,6 +31,20 @@ class App extends React.Component {
         posts: data1,
         users: data2
       }));
+=======
+    likes: []
+  }
+
+  componentDidMount() {
+    fetch(`http://localhost:3000/posts`)
+      .then(r => r.json())
+      .then((postsArr) => {
+        this.setState({
+          posts: postsArr
+        })
+      }
+    )
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
   }
 
 
@@ -31,6 +52,7 @@ class App extends React.Component {
   addNewPost = (evt, postObj) => {
     evt.preventDefault()
     fetch(`http://localhost:3000/posts`, {
+<<<<<<< HEAD
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -69,10 +91,34 @@ class App extends React.Component {
     console.log("Add a like", postObj)
     fetch(`http://localhost:3000/posts/${postObj.id}`, {
       method:'PATCH',
+=======
+      method:'POST',
      headers: { 
          'Content-type': 'application/json',
          'accept': 'application/json'
      },
+     body: JSON.stringify({
+       user: postObj.user,
+       post: postObj.post
+      })
+    })
+    .then(resp => resp.json())
+    .then(json_resp =>
+    this.setState({
+      posts: [...this.state.posts, json_resp]
+    })
+    )
+  }
+
+  deletePost = (postObj) => {
+    fetch(`http://localhost:3000/posts/${postObj.id}`, {
+      method:'DELETE',
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
+     headers: { 
+         'Content-type': 'application/json',
+         'accept': 'application/json'
+     },
+<<<<<<< HEAD
      body: JSON.stringify({
           likes: ++ postObj.likes
       })
@@ -102,11 +148,23 @@ class App extends React.Component {
           posts: [...this.state.comments, json_resp]
         })
       )
+=======
+    })
+    .then(resp => resp.json())
+      .then(json_resp => this.setState({
+      posts: [...this.state.posts.filter(post => post.id !== postObj.id)] 
+    }))
+  }
+
+  increaseLikes = (postObj) => {
+    console.log("Add a like", postObj)
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
   }
 
   render() {
     return (
       <div body-bg="" >
+<<<<<<< HEAD
         <Header />
         <aside>
           <ul> <NavLink to="/">My Page</NavLink></ul>
@@ -121,6 +179,10 @@ class App extends React.Component {
                </Route>
           </Switch>
         </aside>
+=======
+        <Header class=".img-fluid. max-width: 100%;"/>
+        <PostList posts={this.state.posts} handleSubmit={this.addNewPost} handleDelete={this.deletePost} onClick={this.increaseLikes}/>
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
       </div>
     )
   }
@@ -131,4 +193,8 @@ class App extends React.Component {
 
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
 export default App
