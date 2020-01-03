@@ -24,11 +24,7 @@ class Form extends React.Component {
         <label> What's on your mind?: </label><input type="text" name="post" value={this.state.post.post} onChange={this.handleInputChange}></input>
         <button type="submit" value="submit">submit</button>
       </form>
-<<<<<<< HEAD
     }</div>
-=======
-    }</div>;
->>>>>>> 81024071ad5d2901939e37511b7b0f8cfb599d98
   }
 }
 

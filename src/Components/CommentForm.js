@@ -20,7 +20,7 @@ class CommentForm extends React.Component {
     render() {
     return <div>{
       <form onSubmit={(evt) => this.props.handleSubmit(evt, this.state)}>
-        <label> post_id: </label><input type="text" name="post_id" value={this.state.comment.post_id}></input>
+        <input type="none" name="post_id" defaultValue={this.state.comment.post_id}></input>
         <label> Add a comment: </label><input type="text" name="comment" value={this.state.comment.comment} onChange={this.handleInputChange}></input>
         <button type="submit" value="submit">submit</button>
       </form>

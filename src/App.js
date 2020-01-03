@@ -11,6 +11,7 @@ class App extends React.Component {
   state = {
     users: [],
     posts: [],
+    comments: []
   }
 
   componentDidMount() {
@@ -23,18 +24,6 @@ class App extends React.Component {
         posts: data1,
         users: data2
       }));
-    likes: []
-  }
-
-  componentDidMount() {
-    fetch(`http://localhost:3000/posts`)
-      .then(r => r.json())
-      .then((postsArr) => {
-        this.setState({
-          posts: postsArr
-        })
-      }
-    )
   }
 
 
@@ -85,12 +74,22 @@ class App extends React.Component {
          'accept': 'application/json'
      },
      body: JSON.stringify({
-          likes: ++ postObj.likes
+          // likes: ++ postObj.likes
       })
     })
     .then(resp => resp.json())
       .then(json_resp => { 
-        postObj.likes = json_resp
+        let modifiedArray = this.state.posts.map((post) => {
+          if (post.id === json_resp.id) {
+            return json_resp
+          } else {
+            return post
+          }
+        })
+
+        this.setState({
+          posts: modifiedArray
+        })
       })
   }
 
