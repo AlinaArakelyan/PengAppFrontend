@@ -1,5 +1,5 @@
 import React from "react";
-import Comment from "/Users/flatironschoolbrooklyn/peng_frontend/src/Components/Comment.js"
+import Comment from "./Components/Comment.js"
 import ToggleDisplay from 'react-toggle-display'
 import CommentForm from "./CommentForm.js"
 

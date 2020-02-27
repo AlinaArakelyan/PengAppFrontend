@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '/Users/flatironschoolbrooklyn/peng_frontend/src/Images/Peng.png'
+import logo from './Images/Peng.png'
 import "./Header.css"
 
 function Header() {
