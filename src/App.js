@@ -1,28 +1,50 @@
 import React from 'react';
 import './App.css';
 import Header from "./Components/Header.js";
-import { Route, Switch } from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import UserList from './Containers/UserList.js';
 import PostList from './Containers/PostList.js';
+import Login from "./Components/Login.js";
+import Signup from "./Components/Signup.js"
 
 class App extends React.Component {
 
   state = {
-    users: [],
+    isLoggedIn: false,
+    user: {},
     posts: [],
     comments: []
   }
 
+  loginStatus = () => {
+    fetch('http://localhost:3000/logged_in', 
+   {withCredentials: true})
+    .then(response => {
+      if (response.data.logged_in) {
+        this.handleLogin(response)
+      } else {
+        this.handleLogout()
+      }
+    })
+    .catch(error => console.log('api errors:', error))
+  }
+
+  // componentDidMount() {
+  //   this.loginStatus()
+  // }
+
   componentDidMount() {
     Promise.all([
       fetch(`http://localhost:3000/posts`),
-      fetch('http://localhost:3000/users')
+      fetch('http://localhost:3000/users'),
+      this.loginStatus()
     ])
-      .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-      .then(([data1, data2]) => this.setState({
+      .then(([res1, res2, res3]) => Promise.all([res1.json(), res2.json()]))
+      .then(([data1, data2, data3]) => this.setState({
         posts: data1,
-        users: data2
+        users: data2,
+        isLoggedIn: data3
       }));
   }
 
@@ -114,6 +136,19 @@ class App extends React.Component {
       )
   }
 
+  handleLogin = (data) => {
+    this.setState({
+      isLoggedIn: true,
+      user: data.user
+    })
+  }
+handleLogout = () => {
+    this.setState({
+    isLoggedIn: false,
+    user: {}
+    })
+  }
+
   render() {
     return (
       <div body-bg="" >
@@ -122,14 +157,18 @@ class App extends React.Component {
           <ul> <NavLink to="/">My Page</NavLink></ul>
           <ul><NavLink to="/Users">Alumni</NavLink></ul>
           <ul> <NavLink to="/Posts">Posts</NavLink></ul>
+          <BrowserRouter>
           <Switch>
             <Route path="/Users">
               <UserList users={this.state.users} />
             </Route>
+            <Route exact path='/login' component={Login}/>
+            <Route exact path='/signup' component={Signup}/>
             <Route path="/Posts">
               <PostList posts={this.state.posts} handleSubmit={this.addNewPost} handleDelete={this.deletePost} onClick={this.increaseLikes} addComment={this.addNewComment} />} >
                </Route>
           </Switch>
+          </BrowserRouter>
         </aside>
       </div>
     )

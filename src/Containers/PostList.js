@@ -1,6 +1,6 @@
 import React from 'react';
-import Post from './Components/Post.js';
-import Form from './Components/Form.js'
+import Post from '../Components/Post.js';
+import Form from '../Components/Form.js'
 
 export default class PostList extends React.Component{
 
