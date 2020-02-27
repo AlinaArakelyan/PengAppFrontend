@@ -1,5 +1,5 @@
 import React from 'react';
-import User from "/Users/flatironschoolbrooklyn/peng_frontend/src/Components/User.js";
+import User from "./Components/User.js";
 
 export default class UserList extends React.Component { 
 

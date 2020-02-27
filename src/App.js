@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Header from "/Users/flatironschoolbrooklyn/peng_frontend/src/Components/Header.js";
+import Header from "./Components/Header.js";
 import { Route, Switch } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import UserList from './Containers/UserList.js';
