@@ -1,25 +1,27 @@
 import React from 'react';
 import './App.css';
 import Header from "./Components/Header.js";
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import UserList from './Containers/UserList.js';
 import PostList from './Containers/PostList.js';
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js"
+import Home from "./Components/Home.js"
 
 class App extends React.Component {
 
   state = {
     isLoggedIn: false,
     user: {},
+    users: {},
     posts: [],
     comments: []
   }
 
   loginStatus = () => {
-    fetch('http://localhost:3000/logged_in', 
-   {withCredentials: true})
+  fetch('http://localhost:3000/logged_in', 
+   {withCredentials: false})
     .then(response => {
       if (response.data.logged_in) {
         this.handleLogin(response)
@@ -48,7 +50,18 @@ class App extends React.Component {
       }));
   }
 
-
+  handleLogin = (data) => {
+    this.setState({
+      isLoggedIn: true,
+      user: data.user
+    })
+  }
+handleLogout = () => {
+    this.setState({
+    isLoggedIn: false,
+    user: {}
+    })
+  }
 
   addNewPost = (evt, postObj) => {
     evt.preventDefault()
@@ -124,7 +137,7 @@ class App extends React.Component {
         'accept': 'application/json'
       },
       body: JSON.stringify({
-        post_id: commentObj.post_id,
+        post_id: commentObj.post,
         comment: commentObj.comment
       })
     })
@@ -136,39 +149,60 @@ class App extends React.Component {
       )
   }
 
-  handleLogin = (data) => {
-    this.setState({
-      isLoggedIn: true,
-      user: data.user
-    })
-  }
-handleLogout = () => {
-    this.setState({
-    isLoggedIn: false,
-    user: {}
-    })
-  }
+//   handleLogin = (data) => {
+//     this.setState({
+//       isLoggedIn: true,
+//       user: data.user
+//     })
+//   }
+// handleLogout = () => {
+//     this.setState({
+//     isLoggedIn: false,
+//     user: {}
+//     })
+//   }
 
   render() {
+    console.log(this.state.user)
     return (
       <div body-bg="" >
         <Header />
         <aside>
-          <ul> <NavLink to="/">My Page</NavLink></ul>
+          {/* {this.state.user.name} is logged in! */}
+          <ul> <NavLink to="/">Home</NavLink></ul>
           <ul><NavLink to="/Users">Alumni</NavLink></ul>
           <ul> <NavLink to="/Posts">Posts</NavLink></ul>
-          <BrowserRouter>
+          <ul><NavLink to="/Login">Login</NavLink></ul>
+          {/* <BrowserRouter> */}
           <Switch>
             <Route path="/Users">
               <UserList users={this.state.users} />
             </Route>
-            <Route exact path='/login' component={Login}/>
-            <Route exact path='/signup' component={Signup}/>
+            <Route exact path="/"></Route>
+            <Route 
+              exact path='/' 
+              render={props => (
+              <Home {...props} handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn}/>
+              )}
+            />
+            <Route 
+              exact path='/Login' 
+              render={props => (
+              <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+              )}
+            />
+            <Route 
+              exact path='/Signup' 
+              render={props => (
+              <Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+              )}
+            />
+
             <Route path="/Posts">
               <PostList posts={this.state.posts} handleSubmit={this.addNewPost} handleDelete={this.deletePost} onClick={this.increaseLikes} addComment={this.addNewComment} />} >
                </Route>
           </Switch>
-          </BrowserRouter>
+          {/* </BrowserRouter> */}
         </aside>
       </div>
     )
