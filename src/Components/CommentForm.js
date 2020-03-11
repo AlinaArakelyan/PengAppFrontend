@@ -24,9 +24,11 @@ class CommentForm extends React.Component {
       console.log(this.state)
     return <div>{
       <form onSubmit={(evt) => this.props.handleSubmit(evt, this.state)}>
-        <select name="post" defaultValue={this.props.post} onChange={this.handleInputChange}></select>
-        <label> Add a comment: </label><input type="text" name="comment" value={this.state.comment.comment} onChange={this.handleInputChange}></input>
-        <button type="submit" value="submit">submit</button>
+      <select name="post" value={this.state.post} onMouseOver={this.handleSelectChange}>
+        <option name="post">{this.props.post}</option>
+      </select>
+      <label> Add a comment: </label><input type="text" name="comment" value={this.state.comment} onChange={this.handleInputChange}/>
+      <button type="submit" value="submit">submit</button>
       </form>
     }</div>
   }
